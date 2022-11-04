@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  h1= title
+  - 
+   let results =[
+      {
+        "Nuts_Name": "Almonds",
+        "shop": "Walmart Supercenter",
+        "price": 1.29
+      },
+      {
+        "Nuts_Name": "Cashews",
+        "shop": "Herbs 'n Whey",
+        "price": 2.99
+      },
+      {
+        "Nuts_Name": "Pecans",
+        "shop": "Kansas City Nut Company",
+        "price": 2.79
+      },
+      {
+        "Nuts_Name": "Peanuts",
+        "shop": "Sutherlands",
+        "price": 3.29
+      },
+      {
+        "Nuts_Name": "Walnuts",
+        "shop": "Farmstead Nuts and Treats",
+        "price": 1.79
+      }
+    ]
+  .container-fluid 
+    .row 
+      each nuts  in results
+        div(class="col-sm-2" onclick=`buy(${results.indexOf(nuts)})`) 
+          each value,key in nuts  
+            = key+" : "+value
+            br
+  script.
+    function buy(index){
+      alert("You purchased item "+index)
+    }
