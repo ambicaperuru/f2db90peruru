@@ -4,11 +4,20 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('dotenv').config(); 
+const connectionString = process.env.MONGO_CON 
+mongoose = require('mongoose'); 
+mongoose.connect(connectionString,  {useNewUrlParser: true, useUnifiedTopology: true}); 
+
+var mobiles = require("./models/mobile");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gridbuildRouter = require('./routes/gridbuild');
 var selectorRouter = require('./routes/selector');
 var nutsRouter = require('./routes/Nuts');
+var resourceRouter = require('./routes/resource');
+var mobileRouter = require('./routes/mobile');
+
 
 var app = express();
 
@@ -27,6 +36,9 @@ app.use('/users', usersRouter);
 app.use('/selector', selectorRouter);
 app.use('/Nuts', nutsRouter);
 app.use('/gridbuild', gridbuildRouter);
+app.use('/resource', resourceRouter);
+app.use('/mobile', mobileRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,4 +56,47 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+//Get the default connection 
+var db = mongoose.connection; 
+ 
+//Bind connection to error event  
+db.on('error', console.error.bind(console, 'MongoDB connection error:')); 
+db.once("open", function(){ 
+console.log("Connection to DB succeeded")}); 
+
+async function recreateDB(){ 
+
+  await mobiles.deleteMany(); 
+ 
+  let instance1 = new 
+mobiles({mobile_type:"iphone",  size:'14', cost:100000}); 
+  instance1.save( function(err,doc) { 
+      if(err) return console.error(err); 
+      console.log("First object saved") 
+  }); 
+  let instance2 = new 
+mobiles({mobile_type:"iphone pro",  size:'13', cost:90000}); 
+  instance2.save( function(err,doc) { 
+      if(err) return console.error(err); 
+      console.log("Second object saved") 
+  }); 
+  let instance3 = new 
+mobiles({mobile_type:"iphone pro max",  size:'12', cost:700000}); 
+  instance3.save( function(err,doc) { 
+      if(err) return console.error(err); 
+      console.log("Third object saved") 
+  }); 
+  let instance4 = new 
+mobiles({mobile_type:"iphone s",  size:'10', cost:500000}); 
+  instance4.save( function(err,doc) { 
+      if(err) return console.error(err); 
+      console.log("Fourth object saved") 
+  }); 
+} 
+ 
+let reseed = true; 
+if (reseed) { recreateDB();} 
+
+
 module.exports = app;
+

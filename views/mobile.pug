@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+
+  - let mobiles=results
+
+  div(class= "container-fluid")
+    div(class = "row")
+      each mobile,index in mobiles
+        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Type: #{mobile.mobile_type}
+        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Size: #{mobile.size}
+        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Cost: #{mobile.cost}
+
+  script.
+    function buy(itemNum){
+      alert(`The purchased item is ${itemNum+1}`)
+    }
