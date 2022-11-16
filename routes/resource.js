@@ -25,6 +25,6 @@ router.put('/mobile/:id', mobile_controller.mobile_update_put);
 router.get('/mobile/:id', mobile_controller.mobile_detail); 
  
 // GET request for list of all mobile items. 
-router.get('/mobile', mobile_controller.mobile_list); 
+router.get('/mobile', mobile_controller.mobile_list);
  
 module.exports = router; 

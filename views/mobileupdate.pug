@@ -1,0 +1,47 @@
+extends layout
+block content
+  h1= title
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+     - let mobileid = toShow._id 
+     - let mobile_type = toShow.mobile_type 
+     - let mobilecost = toShow.cost 
+     - let mobilesize = toShow.size 
+
+     div.row(class='mb-2')
+        div.mr-1 ID is
+        div #{mobileid}
+        - let actionid = "/resource/mobile/" + mobileid
+        form(id='mobileForm', action= actionid, method="PUT")
+            
+            div.form-group 
+                label.mobileAttr(for='mobile_type') mobile type 
+                input#mobile_type(class="bg-light border border-dark rounded-3 shadow-lg p-2 d-grid gap-3 text-dark" type='text' name='mobile_type' , value=mobile_type) 
+            div.form-group 
+                label.mobileAttr(for='size') mobile size 
+                input#size(class="bg-light border border-dark rounded-3 shadow-lg p-2 d-grid gap-3 text-dark" type='text' name='size', value=size) 
+            div.form-group 
+                label.mobileAttr(for='cost') mobile cost 
+                input#cost(class="bg-light border border-dark rounded-3 shadow-lg p-2 d-grid gap-3 text-dark" type='number' name='cost', value=cost) 
+            input(class="btn btn-success m-2" type="submit") 
+      
+
+        script.
+          document.forms['mobileForm'].addEventListener('submit', (event) => {
+            event.preventDefault();
+            // TODO do something here to show user that form is being submitted
+            fetch(event.target.action, {
+              method: 'PUT',
+              body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+            }).then((resp) => {
+              return resp.json(); // or resp.text() or whatever the server sends
+            }).then((body) => {
+              alert("Update succeded")
+              // TODO handle body
+            }).catch((error) => {
+              // TODO handle error
+              alert("Update failed " + error )
+            });
+          });
