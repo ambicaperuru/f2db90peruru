@@ -6,12 +6,18 @@ block content
   - let mobiles=results
 
   div(class= "container-fluid")
-    div(class = "row")
+    div(class = "row m-1")
       each mobile,index in mobiles
-        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Type: #{mobile.mobile_type}
-        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Size: #{mobile.size}
-        div(class= "col-sm-2 btn btn-primary",  onclick=`buy(${index})`) mobile Cost: #{mobile.cost}
-
+        -let destination = `dispatch(\"/mobile/update?id=${mobile._id}\")`
+        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Type: #{mobile.mobile_type}
+        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Size: #{mobile.size}
+        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Cost: #{mobile.cost}
+        button.btn( class="btn-secondary ml-1", onclick= destination) Update 
+   
+  script. 
+    function dispatch(path){ 
+      window.location.href=path 
+    } 
   script.
     function buy(itemNum){
       alert(`The purchased item is ${itemNum+1}`)
