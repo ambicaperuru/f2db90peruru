@@ -2,23 +2,33 @@ extends layout
 
 block content
   h1= title
-
-  - let mobiles=results
-
+  button.btn(class="btn-primary btn-sm ml-1", style="margin: 5px; width: 120px;", onclick=`dispatch(\"/mobile/create\")`) Create
+  - let items =results
   div(class= "container-fluid")
     div(class = "row m-1")
-      each mobile,index in mobiles
-        -let destination = `dispatch(\"/mobile/update?id=${mobile._id}\")`
-        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Type: #{mobile.mobile_type}
-        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Size: #{mobile.size}
-        div(class= "col-sm-2 btn btn-light",  onclick=`buy(${index})`) mobile Cost: #{mobile.cost}
-        button.btn( class="btn-secondary ml-1", onclick= destination) Update 
+      each item in items
+       div(class="row-sm-2", class="m-1") Item #{item.mobile_type}(#{item.size}) is #{item.cost}
+        button.btn(class="btn-success btn-sm ml-1", style="margin: 5px; width: 120px;", onclick=`dispatch(\"/mobile/detail?id=${item._id}\")`) View
+        button.btn(class="btn-primary btn-sm ml-1", style="margin: 5px; width: 120px;", onclick= `dispatch(\"/mobile/update?id=${item._id}\")`) Update
+        button.btn(class="btn-warning btn-sm ml-1", style="margin: 5px; width: 120px;", onclick= `dispatch(\"/mobile/delete?id=${item._id}\")`) Delete 
    
-  script. 
-    function dispatch(path){ 
-      window.location.href=path 
-    } 
+
   script.
-    function buy(itemNum){
-      alert(`The purchased item is ${itemNum+1}`)
+    function buy(index) {
+      alert("You purchased item " + index);
     }
+    function dispatch(path){
+      window.location.href=path
+    }
+    passport.use(new LocalStrategy(function(username, password, done) {
+            Account.findOne({ username: username }, function (err, user) {
+            if (err) { return done(err); }
+            if (!user) {
+                return done(null, false, { message: 'Incorrect username.' });
+            }
+            if (!user.validPassword(password)) {
+                return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+          });
+      }));
